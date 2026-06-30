@@ -1,0 +1,79 @@
+/**
+ * CSS baseline for @ismlib/core.
+ *
+ * Import this once in your app's entry point to get sensible defaults
+ * for all ismlib widgets. Every setting uses CSS custom properties, so
+ * overriding the design system never requires touching library code.
+ *
+ * @example
+ * ```ts
+ * // In your entry point (main.tsx, index.ts, etc.)
+ * import "@ismlib/core/styles.css";
+ * ```
+ *
+ * Override the design tokens in your own CSS:
+ * ```css
+ * :root {
+ *   --ismlib-color-accent: hotpink;
+ *   --ismlib-radius: 8px;
+ * }
+ * ```
+ *
+ * Target specific widget types with the predictable class names:
+ * ```css
+ * .ismlib-button { font-weight: bold; }
+ * .ismlib-slider { width: 200px; }
+ * ```
+ */
+
+:root {
+	/* Color tokens */
+	--ismlib-color-bg: transparent;
+	--ismlib-color-bg-hover: rgba(255, 255, 255, 0.05);
+	--ismlib-color-bg-active: rgba(255, 255, 255, 0.1);
+	--ismlib-color-text: inherit;
+	--ismlib-color-text-muted: rgba(128, 128, 128, 1);
+	--ismlib-color-accent: #0078d4;
+	--ismlib-color-accent-text: #ffffff;
+	--ismlib-color-border: rgba(255, 255, 255, 0.1);
+	--ismlib-color-error: #ff6b6b;
+	--ismlib-color-success: #51cf66;
+
+	/* Layout tokens */
+	--ismlib-radius: 4px;
+	--ismlib-radius-lg: 8px;
+	--ismlib-spacing: 4px;
+	--ismlib-spacing-md: 8px;
+	--ismlib-spacing-lg: 16px;
+
+	/* Typography tokens */
+	--ismlib-font-family: inherit;
+	--ismlib-font-size: 13px;
+	--ismlib-font-size-sm: 11px;
+	--ismlib-line-height: 1.4;
+
+	/* Animation tokens */
+	--ismlib-duration-fast: 100ms;
+	--ismlib-duration-normal: 200ms;
+	--ismlib-easing: ease;
+}
+
+/* Applied to every ismlib widget root element */
+.ismlib-widget {
+	box-sizing: border-box;
+	font-family: var(--ismlib-font-family);
+	font-size: var(--ismlib-font-size);
+	line-height: var(--ismlib-line-height);
+	color: var(--ismlib-color-text);
+}
+
+/* Root container created by createApp() */
+[data-ismlib-root] {
+	display: contents;
+}
+
+/* Error boundary container */
+[data-ismlib-error] {
+	box-sizing: border-box;
+	font-family: monospace;
+}

@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# Build outputs
+dist/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+.env*.local
+
+# Package manager
+bun.lockb

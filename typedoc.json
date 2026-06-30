@@ -1,0 +1,14 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"entryPoints": ["src/index.ts"],
+	"out": "docs",
+	"name": "@ismlib/core",
+	"includeVersion": true,
+	"excludeInternal": true,
+	"excludePrivate": true,
+	"plugin": [],
+	"readme": "README.md",
+	"navigationLinks": {
+		"Stability Policy": "./STABILITY.md"
+	}
+}
