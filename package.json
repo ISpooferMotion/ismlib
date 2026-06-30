@@ -1,7 +1,10 @@
 {
-	"name": "@ismlib/core",
+	"name": "@ispoofermotion/core",
 	"version": "1.0.0",
-	"private": true,
+	"private": false,
+	"publishConfig": {
+		"access": "public"
+	},
 	"type": "module",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
@@ -32,8 +35,6 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.0",
-		"@testing-library/jest-dom": "^6.9.1",
-		"@testing-library/react": "^16.3.2",
 		"@types/react": "^19.0.0",
 		"@types/react-dom": "^19.0.0",
 		"@vitest/coverage-v8": "^4.1.9",

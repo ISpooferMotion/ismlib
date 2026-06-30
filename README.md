@@ -2,7 +2,7 @@
   <img src="./assets/logo.svg" alt="ISMLib Logo" width="64" />
 </div>
 
-<h1 align="center">@ismlib/core</h1>
+<h1 align="center">@ispoofermotion/core</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge" alt="Version" />
@@ -16,7 +16,13 @@
 
 ## Overview
 
-`@ismlib/core` provides a highly optimized, React-based runtime for any UI layer. It abstracts away complex React state and layout thrashing by offering a specialized `defineWidget` API tailored for high-frequency IPC state streaming and headless rendering synchronization.
+`@ispoofermotion/core` provides a highly optimized, React-based runtime for any UI layer. It abstracts away complex React state and layout thrashing by offering a specialized `defineWidget` API tailored for high-frequency IPC state streaming and headless rendering synchronization.
+
+### Installation
+
+```bash
+bun add @ispoofermotion/core
+```
 
 ## Architecture
 
