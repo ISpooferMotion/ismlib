@@ -232,6 +232,7 @@ describe("widgetProps", () => {
 			args: [],
 			children: null,
 			widgetProps: entry.widgetProps,
+			layoutProps: { x: 0, y: 0 },
 		});
 
 		expect(capturedProps).toMatchObject({
@@ -271,6 +272,7 @@ describe("widgetProps", () => {
 			args: ["Click me"],
 			children: null,
 			widgetProps: entry.widgetProps,
+			layoutProps: { x: 0, y: 0 },
 		});
 
 		expect(capturedProps).toMatchObject({

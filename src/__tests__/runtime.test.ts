@@ -118,6 +118,7 @@ describe("state GC", () => {
 					"data-ismlib-id": id,
 					className: "ismlib-widget ismlib-button",
 				},
+				layoutProps: { x: 0, y: 0 },
 				renderFn: () => null,
 			});
 			runtime.getState(id, { clicked: false });
@@ -163,6 +164,7 @@ describe("state GC", () => {
 							"data-ismlib-id": id,
 							className: "ismlib-widget ismlib-button",
 						},
+						layoutProps: { x: 0, y: 0 },
 						renderFn: () => null,
 					});
 					runtime.getState(id, {});
@@ -201,6 +203,7 @@ describe("scope management", () => {
 					"data-ismlib-id": parentId,
 					className: "ismlib-widget ismlib-panel",
 				},
+				layoutProps: { x: 0, y: 0 },
 				renderFn: () => null,
 			};
 			runtime.getCurrentParentChildren().push(parentEntry);
@@ -219,6 +222,7 @@ describe("scope management", () => {
 					"data-ismlib-id": childId,
 					className: "ismlib-widget ismlib-button",
 				},
+				layoutProps: { x: 0, y: 0 },
 				renderFn: () => null,
 			});
 			runtime.popScope();
