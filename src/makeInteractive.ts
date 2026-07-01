@@ -32,63 +32,67 @@ import { getActiveRuntime } from "./runtime";
  * ```
  */
 export function makeInteractive(
-  onClick: () => void,
-  options: {
-    /**
-     * Override the default tabIndex (0 = in natural tab order).
-     * Pass -1 to remove from tab order (e.g., a disabled element).
-     */
-    tabIndex?: number;
-    /**
-     * Keys that trigger onClick in addition to Enter and Space.
-     * Values are KeyboardEvent.key strings.
-     */
-    extraKeys?: string[];
-    /** Whether the element is disabled. Disabled elements are not interactive. */
-    disabled?: boolean;
-    /** The widget ID to track for focus management */
-    id?: string;
-  } = {},
+	onClick: () => void,
+	options: {
+		/**
+		 * Override the default tabIndex (0 = in natural tab order).
+		 * Pass -1 to remove from tab order (e.g., a disabled element).
+		 */
+		tabIndex?: number;
+		/**
+		 * Keys that trigger onClick in addition to Enter and Space.
+		 * Values are KeyboardEvent.key strings.
+		 */
+		extraKeys?: string[];
+		/** Whether the element is disabled. Disabled elements are not interactive. */
+		disabled?: boolean;
+		/** The widget ID to track for focus management */
+		id?: string;
+	} = {},
 ): {
-  tabIndex: number;
-  onKeyDown: (e: KeyboardEvent) => void;
-  onClick: () => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  "aria-disabled"?: boolean;
+	tabIndex: number;
+	onKeyDown: (e: KeyboardEvent) => void;
+	onClick: () => void;
+	onFocus?: () => void;
+	onBlur?: () => void;
+	"aria-disabled"?: boolean;
 } {
-  const { tabIndex = 0, extraKeys = [], disabled = false, id } = options;
+	const { tabIndex = 0, extraKeys = [], disabled = false, id } = options;
 
-  const activationKeys = new Set(["Enter", " ", ...extraKeys]);
+	const activationKeys = new Set(["Enter", " ", ...extraKeys]);
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (disabled) return;
-    if (activationKeys.has(e.key)) {
-      e.preventDefault();
-      onClick();
-    }
-  };
+	const handleKeyDown = (e: KeyboardEvent) => {
+		if (disabled) return;
+		if (activationKeys.has(e.key)) {
+			e.preventDefault();
+			onClick();
+		}
+	};
 
-  const handleFocus = id ? () => {
-    try {
-      const runtime = getActiveRuntime();
-      if (runtime) runtime.setFocus(id);
-    } catch { }
-  } : undefined;
+	const handleFocus = id
+		? () => {
+				try {
+					const runtime = getActiveRuntime();
+					if (runtime) runtime.setFocus(id);
+				} catch {}
+			}
+		: undefined;
 
-  const handleBlur = id ? () => {
-    try {
-      const runtime = getActiveRuntime();
-      if (runtime?.isFocused(id)) runtime.setFocus(null);
-    } catch { }
-  } : undefined;
+	const handleBlur = id
+		? () => {
+				try {
+					const runtime = getActiveRuntime();
+					if (runtime?.isFocused(id)) runtime.setFocus(null);
+				} catch {}
+			}
+		: undefined;
 
-  return {
-    tabIndex: disabled ? -1 : tabIndex,
-    onKeyDown: handleKeyDown,
-    onClick: disabled ? () => { } : onClick,
-    onFocus: handleFocus,
-    onBlur: handleBlur,
-    ...(disabled ? { "aria-disabled": true } : {}),
-  };
+	return {
+		tabIndex: disabled ? -1 : tabIndex,
+		onKeyDown: handleKeyDown,
+		onClick: disabled ? () => {} : onClick,
+		onFocus: handleFocus,
+		onBlur: handleBlur,
+		...(disabled ? { "aria-disabled": true } : {}),
+	};
 }

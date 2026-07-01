@@ -10,7 +10,7 @@ beforeEach(() => {
 
 describe("500-widget performance budget", () => {
 	it("draws 500 widgets in a single frame in under 16ms", () => {
-		runtime.registerApp(() => { });
+		runtime.registerApp(() => {});
 
 		const Widget = defineWidget<{}, [n: number], void>({
 			name: "PerfWidget",
@@ -34,7 +34,7 @@ describe("500-widget performance budget", () => {
 	});
 
 	it("500-widget GC (all appear and disappear) completes in under 16ms", () => {
-		runtime.registerApp(() => { });
+		runtime.registerApp(() => {});
 
 		const Widget = defineWidget<{}, [n: number], void>({
 			name: "GCWidget",
