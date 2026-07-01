@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/logo.svg" alt="ISMLib Logo" width="64" />
+  <img src="./assets/logo.svg" alt="ISMLib Logo" width="128" />
 </div>
 
 <h1 align="center">@ispoofermotion/core</h1>
