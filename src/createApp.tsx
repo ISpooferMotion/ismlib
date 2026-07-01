@@ -1,19 +1,30 @@
 import type { ReactNode } from "react";
-import { createElement, Fragment, useEffect, useReducer } from "react";
+import {
+	createElement,
+	Fragment,
+	useContext,
+	useEffect,
+	useMemo,
+	useReducer,
+} from "react";
 import { ISMLibErrorBoundary } from "./ErrorBoundary";
-import { runtime } from "./runtime";
-import type { FrameEntry } from "./types";
+import { Runtime, setActiveRuntime } from "./runtime";
+import type { FrameEntry, StorageAdapter } from "./types";
 
 /**
  * Render a single FrameEntry to a React element.
  * Retrieves the widget's current state, creates a setState callback,
  * recursively renders children, and calls the entry's render closure.
  */
-function renderEntry(entry: FrameEntry): ReactNode {
-	const state = runtime.getState(entry.id, entry.defaultState);
+function renderEntry(runtime: Runtime, entry: FrameEntry): ReactNode {
+	const state = runtime.getState(
+		entry.id,
+		entry.defaultState,
+		entry.persistent,
+	);
 
 	const setState = (updater: unknown) => {
-		runtime.setState(entry.id, updater);
+		runtime.setState(entry.id, updater, entry.persistent);
 	};
 
 	// Recursively render children for scoped widgets
@@ -23,7 +34,11 @@ function renderEntry(entry: FrameEntry): ReactNode {
 					Fragment,
 					null,
 					...entry.children.map((child) =>
-						createElement(Fragment, { key: child.id }, renderEntry(child)),
+						createElement(
+							Fragment,
+							{ key: child.id },
+							renderEntry(runtime, child),
+						),
 					),
 				)
 			: null;
@@ -35,7 +50,6 @@ function renderEntry(entry: FrameEntry): ReactNode {
 		args: entry.args,
 		children,
 		widgetProps: entry.widgetProps,
-		layoutProps: entry.layoutProps,
 	});
 }
 
@@ -43,15 +57,55 @@ function renderEntry(entry: FrameEntry): ReactNode {
  * Render the full frame buffer to a React element tree.
  * Each entry is wrapped in a keyed Fragment for stable reconciliation.
  */
-function renderFrameBuffer(entries: FrameEntry[]): ReactNode {
-	if (entries.length === 0) return null;
-	return createElement(
-		Fragment,
-		null,
-		...entries.map((entry) =>
-			createElement(Fragment, { key: entry.id }, renderEntry(entry)),
-		),
-	);
+function renderFrameBuffer(
+	runtime: Runtime,
+	layers: Map<string, FrameEntry[]>,
+): ReactNode {
+	if (layers.size === 0) return null;
+
+	const layerElements: ReactNode[] = [];
+
+	for (const [layerName, entries] of layers.entries()) {
+		if (entries.length === 0) continue;
+
+		layerElements.push(
+			createElement(
+				"div",
+				{
+					key: `layer-${layerName}`,
+					"data-ismlib-layer": layerName,
+					style:
+						layerName === "default"
+							? undefined
+							: {
+									position: "absolute",
+									top: 0,
+									left: 0,
+									width: "100%",
+									height: "100%",
+									pointerEvents: "none",
+									zIndex: 100, // Hardcoded for now, could be dynamic
+								},
+				},
+				...entries.map((entry) =>
+					createElement(
+						Fragment,
+						{ key: entry.id },
+						renderEntry(runtime, entry),
+					),
+				),
+			),
+		);
+	}
+
+	return createElement(Fragment, null, ...layerElements);
+}
+
+/**
+ * Safely access a React Context from within the immediate-mode draw loop.
+ */
+export function useReactContext<T>(context: React.Context<T>): T {
+	return useContext(context);
 }
 
 /**
@@ -91,8 +145,15 @@ function renderFrameBuffer(entries: FrameEntry[]): ReactNode {
  * createRoot(document.getElementById("root")!).render(createElement(App));
  * ```
  */
-export function createApp(drawFn: () => void): React.FC {
+export interface AppOptions {
+	storage?: StorageAdapter;
+}
+
+export function createApp(drawFn: () => void, options?: AppOptions): React.FC {
 	function ISMLib() {
+		// Create a unique runtime instance for this app root
+		const runtime = useMemo(() => new Runtime(options?.storage), []);
+
 		// Force re-render by incrementing a counter.
 		// This is the only React state in the entire system.
 		const [, forceRender] = useReducer((x: number) => x + 1, 0);
@@ -103,7 +164,7 @@ export function createApp(drawFn: () => void): React.FC {
 			return () => {
 				runtime.unregisterApp();
 			};
-		}, []);
+		}, [runtime]);
 
 		// Consume transient state (e.g., button "clicked" flags) after every commit.
 		// Runs after React has flushed DOM updates, so the user's draw function
@@ -114,6 +175,8 @@ export function createApp(drawFn: () => void): React.FC {
 
 		// Run the draw pass: describe this frame as pure data
 		let drawError: string | null = null;
+
+		setActiveRuntime(runtime);
 		runtime.beginFrame();
 		try {
 			drawFn();
@@ -121,6 +184,7 @@ export function createApp(drawFn: () => void): React.FC {
 			drawError = err instanceof Error ? err.message : String(err);
 		}
 		runtime.endFrame();
+		setActiveRuntime(null);
 
 		// If the draw function threw, show a friendly error
 		if (drawError) {
@@ -145,7 +209,7 @@ export function createApp(drawFn: () => void): React.FC {
 		return createElement(
 			"div",
 			{ "data-ismlib-root": "" },
-			renderFrameBuffer(frameBuffer),
+			renderFrameBuffer(runtime, frameBuffer),
 		);
 	}
 

@@ -1,10 +1,16 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { defineWidget } from "../defineWidget";
-import { runtime } from "../runtime";
+import { Runtime, setActiveRuntime } from "../runtime";
+
+let runtime: Runtime;
+beforeEach(() => {
+	runtime = new Runtime();
+	setActiveRuntime(runtime);
+});
 
 describe("500-widget performance budget", () => {
 	it("draws 500 widgets in a single frame in under 16ms", () => {
-		runtime.registerApp(() => {});
+		runtime.registerApp(() => { });
 
 		const Widget = defineWidget<{}, [n: number], void>({
 			name: "PerfWidget",
@@ -28,7 +34,7 @@ describe("500-widget performance budget", () => {
 	});
 
 	it("500-widget GC (all appear and disappear) completes in under 16ms", () => {
-		runtime.registerApp(() => {});
+		runtime.registerApp(() => { });
 
 		const Widget = defineWidget<{}, [n: number], void>({
 			name: "GCWidget",
