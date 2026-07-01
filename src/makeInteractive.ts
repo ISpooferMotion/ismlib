@@ -19,7 +19,7 @@ import { getActiveRuntime } from "./runtime";
  *
  * @example
  * ```ts
- * import { makeInteractive } from "@ismlib/core";
+ * import { makeInteractive } from "@ispoofermotion/core";
  *
  * render: ({ id, state, setState, widgetProps }) => {
  *   const interactive = makeInteractive(() => setState({ clicked: true }));
@@ -71,26 +71,26 @@ export function makeInteractive(
 
 	const handleFocus = id
 		? () => {
-				try {
-					const runtime = getActiveRuntime();
-					if (runtime) runtime.setFocus(id);
-				} catch {}
-			}
+			try {
+				const runtime = getActiveRuntime();
+				if (runtime) runtime.setFocus(id);
+			} catch { }
+		}
 		: undefined;
 
 	const handleBlur = id
 		? () => {
-				try {
-					const runtime = getActiveRuntime();
-					if (runtime?.isFocused(id)) runtime.setFocus(null);
-				} catch {}
-			}
+			try {
+				const runtime = getActiveRuntime();
+				if (runtime?.isFocused(id)) runtime.setFocus(null);
+			} catch { }
+		}
 		: undefined;
 
 	return {
 		tabIndex: disabled ? -1 : tabIndex,
 		onKeyDown: handleKeyDown,
-		onClick: disabled ? () => {} : onClick,
+		onClick: disabled ? () => { } : onClick,
 		onFocus: handleFocus,
 		onBlur: handleBlur,
 		...(disabled ? { "aria-disabled": true } : {}),

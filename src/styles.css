@@ -1,5 +1,5 @@
 /**
- * CSS baseline for @ismlib/core.
+ * CSS baseline for @ispoofermotion/core.
  *
  * Import this once in your app's entry point to get sensible defaults
  * for all ismlib widgets. Every setting uses CSS custom properties, so
@@ -8,7 +8,7 @@
  * @example
  * ```ts
  * // In your entry point (main.tsx, index.ts, etc.)
- * import "@ismlib/core/styles.css";
+ * import "@ispoofermotion/core/styles.css";
  * ```
  *
  * Override the design tokens in your own CSS:

@@ -129,7 +129,7 @@ export function useReactContext<T>(context: React.Context<T>): T {
  *
  * @example
  * ```ts
- * import { createApp, markDirty } from "@ismlib/core";
+ * import { createApp, markDirty } from "@ispoofermotion/core";
  * import { Button, Text } from "./widgets";
  *
  * let count = 0;

@@ -12,7 +12,7 @@ interface State {
 }
 
 /**
- * React error boundary for `@ismlib/core` applications.
+ * React error boundary for `@ispoofermotion/core` applications.
  *
  * Wraps the immediate-mode app component and catches any uncaught errors
  * thrown during React's render phase (e.g., from a widget's `render` function).
@@ -25,7 +25,7 @@ interface State {
  *
  * @example
  * ```tsx
- * import { ISMLibErrorBoundary } from "@ismlib/core";
+ * import { ISMLibErrorBoundary } from "@ispoofermotion/core";
  *
  * createRoot(root).render(
  *   createElement(ISMLibErrorBoundary, { onError: (e) => reportError(e) },
