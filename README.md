@@ -60,3 +60,31 @@ export const ProfileCard = defineWidget({
 ## License
 
 Proprietary and Confidential. Unauthorized copying, distribution, or usage of this file, via any medium, is strictly prohibited.
+
+---
+
+## Changelog
+
+### [2.0.0] - 2026-07-01
+
+#### Added
+- **Storage Adapters**: Introduced `StorageAdapter` interface. Widgets can now be flagged with `persistent: true` to automatically restore state (e.g., from `localStorage`) across application restarts.
+- **Environment Contexts**: Added `pushContext`, `popContext`, and `getContext` APIs for native immediate-mode dependency injection (similar to React Context).
+- **Layering & Portals**: Added `pushLayer` and `popLayer` to render overlapping interfaces like tooltips and modals natively.
+- **Scope Memoization**: Introduced `memoBlock(id, deps, drawClosure)` for aggressive CPU time reduction by deep-cloning subtrees dynamically when dependencies haven't changed.
+- **Focus Management**: Integrated `FocusManager` into the runtime. `makeInteractive` now listens to focus events globally. Added `setFocus` and `isFocused`.
+- **DevTools Hook**: The engine now securely mounts to `window.__ISMLIB_DEVTOOLS__`, allowing extensions to query internal layout buffers and the state store without polling.
+- (7b9e80f) **Tests**: Fixed TypeScript type errors by providing missing layoutProps in test mocks.
+- (b5c12c5) **Chore**: Configured package for `@ispoofermotion` organization release.
+
+#### Changed
+- **Architectural Overhaul**: Removed the global `runtime` singleton. The engine now uses a React-style thread-local dispatcher pattern (`getActiveRuntime()`), supporting multiple independent `ismlib` instances on a single page.
+- **Garbage Collection**: Replaced frame-count based state expiration with a robust, time-based GC using `Date.now()`.
+- **Layout System**: Completely deleted absolute positional coordinate tracking (`cursorX`/`cursorY`). Layouts are now cleanly deferred to native CSS Flexbox and Grid.
+
+#### Removed
+- Removed explicit layout properties (`layoutProps`) globally from the widget definitions, adopting a modern declarative DOM integration pattern.
+
+### [1.0.0] - 2026-06-30
+
+- Initial release with `defineWidget`, `createApp`, and virtual DOM to React runtime adapter.
