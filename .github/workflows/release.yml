@@ -21,6 +21,12 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Setup Node (for npm publish)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
       - name: Install dependencies
         run: bun install
 
@@ -67,3 +73,9 @@ jobs:
           tag_name: "v${{ steps.pkg.outputs.version }}"
           name: "v${{ steps.pkg.outputs.version }}"
           body_path: ${{ steps.changelog.outputs.notes_file }}
+
+      - name: Publish to npm
+        if: steps.tag_check.outputs.exists == 'false'
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
