@@ -22,7 +22,7 @@
     "assets",
     "README.md",
     "LICENSE",
-    "CHANGELOG.MD"
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsup",
