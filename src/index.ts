@@ -45,6 +45,7 @@
 
 export type { AppOptions } from "./createApp";
 export { createApp, useReactContext } from "./createApp";
+export { attachDevConsole, DevConsole, getDevLogs } from "./DevConsole";
 export { defineWidget } from "./defineWidget";
 export { ISMLibErrorBoundary } from "./ErrorBoundary";
 export { makeInteractive } from "./makeInteractive";

@@ -6,6 +6,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-07-02
+
+### Added
+
+- **DevConsole**: Added `attachDevConsole(limit?)`, `getDevLogs()`, and the `DevConsole` immediate-mode widget. Call `attachDevConsole()` once at startup to hook `console.log/warn/error` into a capped ring buffer; render `DevConsole()` anywhere in your draw function to get a floating, collapsible log panel. Zero cost in production - designed to be tree-shaken away behind `import.meta.env.DEV`.
+
 ## [2.0.0] - 2026-07-01
 
 ### Added
